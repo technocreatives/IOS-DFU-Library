@@ -255,7 +255,15 @@ import CoreBluetooth
      Longer name will be trundated. UTF-8 characters can be cut in the middle.
      */
     @objc public var alternativeAdvertisingName: String? = nil
-    
+
+    /**
+     Specifies the expected advertisement name. Will not be used if `alternativeAdvertisingNameEnabled` is `true`.
+     If `nil` any device will be used.
+     This can be used as a workaround if `alternativeAdvertisingNameEnabled` fails to set the alternative name
+     and the actual name is known beforehand.
+     */
+    @objc public var expectedAdvertisingName: String? = nil
+
     /**
      Set this flag to true to enable experimental buttonless feature in Secure DFU.
      When the experimental Buttonless DFU Service is found on a device, the service

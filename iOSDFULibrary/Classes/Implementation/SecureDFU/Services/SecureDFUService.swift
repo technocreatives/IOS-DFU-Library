@@ -597,6 +597,7 @@ import CoreBluetooth
      - parameter report: Method called when an error occurred.
      */
     func jumpToBootloaderMode(withAlternativeAdvertisingName name: String?,
+                              expectedAdvertisingName expectedName: String?,
                               onSuccess success: @escaping Callback,
                               onError report: @escaping ErrorCallback) {
         if !aborted {
@@ -637,6 +638,7 @@ import CoreBluetooth
                         }
                     })
             } else {
+                self.targetPeripheral?.bootloaderName = expectedName
                 enterBootloader()
             }
         } else {

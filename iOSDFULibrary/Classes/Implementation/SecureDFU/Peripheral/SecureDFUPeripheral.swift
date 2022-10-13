@@ -39,6 +39,10 @@ internal class SecureDFUPeripheral : BaseCommonDFUPeripheral<SecureDFUExecutor, 
     /// The alternative advertising name to use specified by the user, if
     /// `nil` then use a randomly generated name.
     let alternativeAdvertisingName: String?
+
+    /// The  advertising name the device is expected to have.
+    /// Will not be used if `alternativeAdvertisingNameEnabled` is `true`.
+    let expectedAdvertisingName: String?
     
     /// This flag is set when the bootloader is setting alternative advertising name.
     /// If the buttonless service is not configured correctly, it will reboot on the attempt to
@@ -66,6 +70,7 @@ internal class SecureDFUPeripheral : BaseCommonDFUPeripheral<SecureDFUExecutor, 
     override init(_ initiator: DFUServiceInitiator, _ logger: LoggerHelper) {
         self.alternativeAdvertisingNameEnabled = initiator.alternativeAdvertisingNameEnabled
         self.alternativeAdvertisingName = initiator.alternativeAdvertisingName.map { String($0.prefix(20)) }
+        self.expectedAdvertisingName = initiator.expectedAdvertisingName
         super.init(initiator, logger)
     }
     
@@ -115,6 +120,7 @@ internal class SecureDFUPeripheral : BaseCommonDFUPeripheral<SecureDFUExecutor, 
         possibleDisconnectionOnSettingAlternativeName = name != nil
         
         dfuService.jumpToBootloaderMode(withAlternativeAdvertisingName: name,
+                                        expectedAdvertisingName: expectedAdvertisingName,
             onSuccess: { [weak self] in
                 self?.jumpingToBootloader = true
                 self?.possibleDisconnectionOnSettingAlternativeName = false
